@@ -1,0 +1,114 @@
+{
+  "entities": {
+    "UserStatus": {
+      "title": "User Status",
+      "description": "Tracks real-time online status of users",
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "online",
+            "offline"
+          ]
+        },
+        "lastSeen": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "status",
+        "lastSeen"
+      ]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "A conversation between a buyer and a seller about a book",
+      "type": "object",
+      "properties": {
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bookId": {
+          "type": "string"
+        },
+        "bookTitle": {
+          "type": "string"
+        },
+        "buyerId": {
+          "type": "string"
+        },
+        "sellerId": {
+          "type": "string"
+        },
+        "lastMessage": {
+          "type": "string"
+        },
+        "lastMessageAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "unreadCount": {
+          "type": "object",
+          "description": "Map of userId to unread message count"
+        }
+      },
+      "required": [
+        "participants",
+        "bookId",
+        "buyerId",
+        "sellerId"
+      ]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "An individual message in a chat",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "senderId": {
+          "type": "string"
+        },
+        "receiverId": {
+          "type": "string"
+        },
+        "bookId": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "senderId",
+        "receiverId",
+        "timestamp",
+        "bookId"
+      ]
+    }
+  },
+  "firestore": {
+    "/userStatus/{userId}": {
+      "schema": "UserStatus",
+      "description": "Collection of user online statuses"
+    },
+    "/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "Collection of active chat sessions"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Subcollection of messages for a chat"
+    }
+  }
+}

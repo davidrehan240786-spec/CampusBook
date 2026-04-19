@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helpers
+    // We are trusting the client-provided IDs for this college project
+    // as the user is using a custom SQL backend instead of Firebase Auth.
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // User Presence tracking
+    match /userStatus/{userId} {
+      allow read: if true;
+      allow write: if true; // In a real app, we'd verify this against Auth
+    }
+
+    // Chats Collection
+    match /chats/{chatId} {
+      // Allow user to see chats they are part of
+      allow read: if true; // We filter on the client side for participants
+      
+      // Allow creating a new chat
+      allow create: if true;
+                    
+      // Allow updating chat metadata (last message, unread counts)
+      allow update: if true;
+
+      // Messages Sub-collection
+      match /messages/{messageId} {
+        allow read: if true;
+        allow create: if true;
+      }
+    }
+  }
+}
+
