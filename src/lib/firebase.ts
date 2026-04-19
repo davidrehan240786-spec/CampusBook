@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 console.log("ENV CHECK:", import.meta.env);
 console.log("API KEY:", import.meta.env.VITE_FIREBASE_API_KEY);
 import { initializeApp } from 'firebase/app';

@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, AlertCircle, Info, AlertTriangle } from 'lucide-react';

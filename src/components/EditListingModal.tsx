@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Save, Trash2, ChevronDown } from 'lucide-react';

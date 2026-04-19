@@ -1,6 +1,7 @@
 // Simple Backend Server for College Project
 // Uses: Express, MySQL, CORS
 // Running on Port 5000
+// coderabbit full review trigger
 
 const express = require('express');
 const mysql = require('mysql2');

@@ -1,5 +1,6 @@
 -- phpMyAdmin SQL Dump
 -- Campus Book Exchange Mini Project
+// coderabbit full review trigger
 
 CREATE DATABASE IF NOT EXISTS campus_book_exchange;
 USE campus_book_exchange;

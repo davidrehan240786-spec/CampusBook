@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 import React from 'react';
 import { motion } from 'motion/react';
 import { Book, Star, ArrowRight, Sparkles, Award } from 'lucide-react';

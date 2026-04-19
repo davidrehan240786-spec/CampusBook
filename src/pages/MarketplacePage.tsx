@@ -1,3 +1,5 @@
+// coderabbit full review trigger
+
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BOOK_CATEGORIES, CAMPUSES } from '../constants';

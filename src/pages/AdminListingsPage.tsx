@@ -1,3 +1,5 @@
+// coderabbit full review trigger
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { BookOpen, Trash2, User, Search } from 'lucide-react';

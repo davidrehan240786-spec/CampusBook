@@ -1,5 +1,6 @@
 // Campus Book Exchange - Basic Backend
 // Works with Google AI Studio (Vite + MySQL)
+// coderabbit full review trigger
 
 import express from 'express';
 import mysql from 'mysql2';

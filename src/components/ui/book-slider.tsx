@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 import React from 'react';
 import HTMLFlipBook from "react-pageflip";
 import { BookOpen, Users, Lightbulb, ListChecks, Workflow, HelpCircle } from 'lucide-react';
