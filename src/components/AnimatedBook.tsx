@@ -1,4 +1,4 @@
-// coderabbit full review triggerimport React from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { cn } from './UI';
 
