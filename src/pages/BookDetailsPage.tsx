@@ -1,3 +1,5 @@
+// coderabbit full review trigger
+
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, BookOpen } from "lucide-react";

@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 import React from 'react';
 import { motion } from 'motion/react';
 import { School, BookOpen, ArrowRight, Calendar } from 'lucide-react';

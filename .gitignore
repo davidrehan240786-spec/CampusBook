@@ -6,3 +6,4 @@ coverage/
 *.log
 .env*
 !.env.example
+# coderabbit full review trigger

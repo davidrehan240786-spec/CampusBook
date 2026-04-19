@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 export function calculateBookAge(purchaseDate: string): string {
   if (!purchaseDate) return 'Age unknown';
   

@@ -1,3 +1,5 @@
+// coderabbit full review trigger
+
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { DUMMY_ACTIVITY } from '../constants';

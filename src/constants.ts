@@ -1,3 +1,6 @@
+
+// coderabbit full review trigger
+
 import { Book, ShoppingBag, Activity, MessageSquare, Settings, Search, User, MapPin, PlusCircle, LogIn } from 'lucide-react';
 
 export const BOOK_CATEGORIES = ['Novels', 'Textbooks', 'Comic Books', 'Study Guides', 'Magazines', 'Other'];

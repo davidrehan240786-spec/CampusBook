@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 export type UserRole = 'user' | 'admin';
 
 export const isLoggedIn = () => {

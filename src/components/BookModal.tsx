@@ -1,3 +1,4 @@
+// coderabbit full review trigger
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, School, Calendar, User, Mail, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';

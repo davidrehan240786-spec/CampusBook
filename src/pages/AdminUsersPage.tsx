@@ -1,3 +1,5 @@
+// coderabbit full review trigger
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { User, Trash2, Mail, School, FileText, Phone } from 'lucide-react';

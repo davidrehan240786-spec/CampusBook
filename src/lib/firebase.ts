@@ -1,5 +1,3 @@
-console.log("ENV CHECK:", import.meta.env);
-console.log("API KEY:", import.meta.env.VITE_FIREBASE_API_KEY);
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
