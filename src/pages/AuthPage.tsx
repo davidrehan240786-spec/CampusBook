@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { Button, Input, cn } from '../components/UI';
 import { Link, useNavigate } from 'react-router-dom';
 import { Book, User as UserIcon, Shield } from 'lucide-react';
-import { setUserRole, UserRole } from '../lib/auth';
+import { setUserRole, UserRole, getFullName } from '../lib/auth';
 import { useToast } from '../components/Toast';
 
 const IS_DEMO_MODE = (import.meta as any).env.VITE_DEMO_MODE === 'true';
@@ -46,7 +46,7 @@ export const AuthPage = () => {
         }
 
         setUserRole(data.user.role, data.user, data.token);
-        showToast(`Welcome back, ${data.user.name}!`, 'success');
+        showToast(`Welcome back, ${getFullName(data.user)}!`, 'success');
 
         setTimeout(() => {
           window.location.href = '/marketplace';

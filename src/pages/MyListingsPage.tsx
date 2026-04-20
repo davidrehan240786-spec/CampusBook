@@ -78,7 +78,7 @@ export const MyListingsPage = () => {
 
           // Send system message to each buyer via Firebase chatService
           const sellerId = currentUser.id;
-          const sellerName = currentUser.name || currentUser.email;
+          const sellerName = getFullName(currentUser);
           const book = listings.find(b => b.id === targetBookId);
           if (book) {
             for (const buyerId of buyerIds) {

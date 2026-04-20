@@ -68,7 +68,8 @@ export const EditListingModal = ({ book, isOpen, onClose, onSave, onDelete }: Ed
       }
       setExistingImages(parsedImages || []);
 
-      if (CAMPUSES.includes(book.campus)) {
+      const isStandardCampus = CAMPUSES.some(c => c.short === book.campus);
+      if (isStandardCampus) {
         setSelectedCampus(book.campus);
         setOtherCampusName('');
       } else {
@@ -240,7 +241,7 @@ export const EditListingModal = ({ book, isOpen, onClose, onSave, onDelete }: Ed
                     >
                       <option value="" disabled>Choose your college...</option>
                       {CAMPUSES.map(campus => (
-                        <option key={campus} value={campus}>{campus}</option>
+                        <option key={campus.short} value={campus.short}>{campus.full}</option>
                       ))}
                     </Select>
                     <ChevronDown size={18} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-dark" />
