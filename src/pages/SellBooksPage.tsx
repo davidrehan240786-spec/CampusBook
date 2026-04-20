@@ -90,7 +90,7 @@ export const SellBooksPage = () => {
           category: selectedCategory,
           condition: selectedCondition,
           seller_id: currentUser.id,
-          seller_name: currentUser.name
+          seller_name: getFullName(currentUser)
         })
       });
 
@@ -154,7 +154,7 @@ export const SellBooksPage = () => {
                   >
                     <option value="" disabled>Choose your college...</option>
                     {CAMPUSES.map(campus => (
-                      <option key={campus} value={campus}>{campus}</option>
+                      <option key={campus.short} value={campus.short}>{campus.full}</option>
                     ))}
                   </Select>
                   <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-dark" />

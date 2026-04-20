@@ -10,7 +10,7 @@ import { getCurrentUser } from '../lib/auth';
 import { BookCard } from '../components/BookCard';
 import { useNavigate } from 'react-router-dom';
 
-const DEFAULT_CAMPUS = 'SJCE';
+const DEFAULT_CAMPUS = 'KLE';
 
 const IS_DEMO_MODE = (import.meta as any).env.VITE_DEMO_MODE === 'true';
 
@@ -21,7 +21,7 @@ const DEMO_BOOKS = [
     author: 'Narasimha Karumanchi',
     category: 'Computer Science',
     price: 450,
-    campus: 'SJCE',
+    campus: 'KLE',
     status: 'Available',
     image: 'https://picsum.photos/seed/dsa/400/600',
     images: ['https://picsum.photos/seed/dsa/400/600'],
@@ -169,7 +169,7 @@ export const MarketplacePage = () => {
             >
               <option value="" disabled>Select Campus</option>
               {CAMPUSES.map(campus => (
-                <option key={campus} value={campus}>{campus}</option>
+                <option key={campus.short} value={campus.short}>{campus.full}</option>
               ))}
             </Select>
             <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-dark" />
@@ -333,7 +333,7 @@ export const MarketplacePage = () => {
               setCategories([]);
             }}
           >
-            Reset to SJCE Campus
+            Reset to KLE Campus
           </Button>
         </div>
       )}

@@ -37,8 +37,8 @@ const db = mysql.createPool({
 
 // Demo Data for Preview Mode
 const MOCK_BOOKS = [
-    { id: 101, title: 'Introduction to Algorithms', author: 'CLRS', category: 'Computer Science', price: 600, campus: 'SJCE', status: 'Available', image_url: 'https://picsum.photos/seed/algo/400/600', purchase_date: '2023-01-01', condition_status: 'New', description: 'Core textbook for algorithms.', seller_name: 'Rahul', seller_id: 10, images: ['https://picsum.photos/seed/algo/400/600'] },
-    { id: 102, title: 'Engineering Physics', author: 'Gaur & Gupta', category: 'Physics', price: 250, campus: 'SJCE', status: 'Available', image_url: 'https://picsum.photos/seed/physics/400/600', purchase_date: '2022-05-20', condition_status: 'Good', description: 'Used for first year.', seller_name: 'Priya', seller_id: 11, images: ['https://picsum.photos/seed/physics/400/600'] }
+    { id: 101, title: 'Introduction to Algorithms', author: 'CLRS', category: 'Computer Science', price: 600, campus: 'KLE', status: 'Available', image_url: 'https://picsum.photos/seed/algo/400/600', purchase_date: '2023-01-01', condition_status: 'New', description: 'Core textbook for algorithms.', seller_name: 'Rahul', seller_id: 10, images: ['https://picsum.photos/seed/algo/400/600'] },
+    { id: 102, title: 'Engineering Physics', author: 'Gaur & Gupta', category: 'Physics', price: 250, campus: 'KLE', status: 'Available', image_url: 'https://picsum.photos/seed/physics/400/600', purchase_date: '2022-05-20', condition_status: 'Good', description: 'Used for first year.', seller_name: 'Priya', seller_id: 11, images: ['https://picsum.photos/seed/physics/400/600'] }
 ];
 
 // Test the connection
@@ -83,8 +83,16 @@ app.post('/login', (req, res) => {
 
     if (IS_DEMO_MODE && (email === "test@example.com" || email.includes("admin"))) {
         const role = email.includes("admin") ? "admin" : "user";
-        const user = { id: 1, name: "Demo User", email, role, campus: "SJCE" };
-        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+        const user = { 
+            id: 1, 
+            name: "Demo User", 
+            first_name: "Demo", 
+            last_name: "User", 
+            email, 
+            role, 
+            campus: "KLE" 
+        };
+        const token = jwt.sign({ id: user.id, email: user.email, role: user.role, first_name: user.first_name, last_name: user.last_name }, JWT_SECRET, { expiresIn: '24h' });
         return res.json({
             success: true,
             user,
@@ -98,7 +106,13 @@ app.post('/login', (req, res) => {
             return res.json({ success: false, message: "Invalid credentials" });
         }
         const user = results[0];
-        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ 
+            id: user.id, 
+            email: user.email, 
+            role: user.role,
+            first_name: user.first_name,
+            last_name: user.last_name
+        }, JWT_SECRET, { expiresIn: '24h' });
         res.json({ success: true, user, token });
     });
 });
@@ -107,11 +121,11 @@ app.post('/login', (req, res) => {
 app.post('/signup', (req, res) => {
     console.log("Signup Payload:", req.body);
     const { firstName, lastName, email, password, campus, usn, phone } = req.body;
-    const fullName = firstName + " " + lastName;
+    const fullName = firstName + " " + (lastName || "");
     const finalUsn = usn || null;
 
-    const sql = "INSERT INTO users (name, email, password, campus, role, usn, phone) VALUES (?, ?, ?, ?, 'user', ?, ?)";
-    db.query(sql, [fullName, email, password, campus, finalUsn, phone], (err) => {
+    const sql = "INSERT INTO users (name, first_name, last_name, email, password, campus, role, usn, phone) VALUES (?, ?, ?, ?, ?, ?, 'user', ?, ?)";
+    db.query(sql, [fullName.trim(), firstName, lastName || "", email, password, campus, finalUsn, phone], (err) => {
         if (err) {
             console.error("Signup Error:", err);
             return res.json({ success: false, message: "Registration failed or email already exists" });
@@ -295,7 +309,7 @@ app.get('/requests/:userId', verifyUser, (req, res) => {
         new Promise((resolve, reject) => {
             const sql = `SELECT r.id, r.book_id, r.buyer_id, r.status, r.created_at as date, r.message, 
                          b.title as book, b.seller_id,
-                         COALESCE(u.name, 'Unknown') as user 
+                         COALESCE(NULLIF(CONCAT(u.first_name, ' ', u.last_name), ' '), u.name, 'Unknown') as user 
                          FROM requests r 
                          JOIN books b ON r.book_id = b.id 
                          LEFT JOIN users u ON b.seller_id = u.id 
@@ -305,7 +319,7 @@ app.get('/requests/:userId', verifyUser, (req, res) => {
         new Promise((resolve, reject) => {
             const sql = `SELECT r.id, r.book_id, r.buyer_id, r.status, r.created_at as date, r.message, 
                          b.title as book, b.seller_id,
-                         COALESCE(u.name, 'Unknown') as user 
+                         COALESCE(NULLIF(CONCAT(u.first_name, ' ', u.last_name), ' '), u.name, 'Unknown') as user 
                          FROM requests r 
                          JOIN books b ON r.book_id = b.id 
                          LEFT JOIN users u ON r.buyer_id = u.id 
@@ -346,11 +360,48 @@ app.put('/requests/:id', verifyUser, (req, res) => {
     });
 });
 
+// 8.6. USER PROFILE APIs
+app.get('/api/user-profile', verifyUser, (req, res) => {
+    const userId = req.user.id;
+    console.log("Fetching profile for user ID:", userId);
+    const sql = "SELECT id, name, first_name, last_name, email, role, campus, phone, usn FROM users WHERE id = ?";
+    db.query(sql, [userId], (err, results) => {
+        if (err || results.length === 0) {
+            console.error("Profile fetch error:", err);
+            return res.status(500).json({ success: false, message: 'User not found' });
+        }
+        const user = results[0];
+        res.json({ success: true, user });
+    });
+});
+
+app.put('/api/user-profile', verifyUser, (req, res) => {
+    const userId = req.user.id;
+    const { name, firstName, lastName, phone, campus } = req.body;
+    console.log("Updating profile for user ID:", userId, req.body);
+
+    // Maintain backward compatibility by updating both split and combined fields
+    const fullName = name || (firstName + " " + (lastName || ""));
+    const sql = "UPDATE users SET name = ?, first_name = ?, last_name = ?, phone = ?, campus = ? WHERE id = ?";
+    db.query(sql, [fullName.trim(), firstName, lastName || "", phone, campus, userId], (err) => {
+        if (err) {
+            console.error("Profile update error:", err);
+            return res.status(500).json({ success: false, message: 'Update failed' });
+        }
+        res.json({ success: true, message: 'Profile updated successfully' });
+    });
+});
+
+
+app.all('/api/*', (req, res) => {
+    res.status(404).json({ success: false, message: `API route ${req.url} not found` });
+});
+
 // 8.5. ADMIN ACTIVITY API
 app.get('/admin/activity', verifyAdmin, (req, res) => {
     const sql = `
         SELECT 
-            CONCAT('User ', u.name, ' requested "', b.title, '"') AS activity, 
+            CONCAT('User ', COALESCE(NULLIF(CONCAT(u.first_name, ' ', u.last_name), ' '), u.name), ' requested "', b.title, '"') AS activity, 
             r.created_at AS date
         FROM requests r
         JOIN users u ON r.buyer_id = u.id
@@ -389,7 +440,7 @@ app.post('/seed-demo-data', (req, res) => {
 
 // GET ALL USERS (Admin)
 app.get('/admin/users', verifyAdmin, (req, res) => {
-    const sql = "SELECT id, name, email, role, campus, phone, usn FROM users";
+    const sql = "SELECT id, name, first_name, last_name, email, role, campus, phone, usn FROM users";
 
     db.query(sql, (err, results) => {
         if (err) return res.status(500).json({ success: false, message: err.message });

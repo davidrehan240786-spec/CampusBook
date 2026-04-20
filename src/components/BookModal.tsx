@@ -1,7 +1,7 @@
 // coderabbit full review trigger
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, School, Calendar, User, Mail, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';
+import { X, School, Calendar, User, Mail, ChevronLeft, ChevronRight, MessageSquare, BookOpen } from 'lucide-react';
 import { Badge, Button, cn } from './UI';
 import { useNavigate } from 'react-router-dom';
 import { calculateBookAge } from '../lib/dateUtils';
@@ -101,7 +101,7 @@ export const BookModal = ({ book, onClose }: BookModalProps) => {
       setIsStartingChat(true);
       await chatService.startChat(
         currentUser.id.toString(),
-        currentUser.name || 'Student',
+        getFullName(currentUser),
         book.sellerId,
         book.sellerName || 'Seller',
         book.id,

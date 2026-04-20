@@ -6,7 +6,7 @@ import { User, Trash2, Mail, School, FileText, Phone } from 'lucide-react';
 import { Button, Badge } from '../components/UI';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { useToast } from '../components/Toast';
-import { getToken } from '../lib/auth';
+import { getToken, getFullName } from '../lib/auth';
 
 export const AdminUsersPage = () => {
   const { showToast } = useToast();
@@ -108,11 +108,11 @@ export const AdminUsersPage = () => {
           >
             <div className="flex items-center gap-6">
               <div className="w-16 h-16 bg-white border-2 border-dark rounded-[20px] flex items-center justify-center text-2xl font-black shadow-[4px_4px_0_0_rgba(25,26,35,1)]">
-                {user.name?.split(' ').map((n: string) => n[0]).join('') || 'U'}
+                {user.first_name?.[0]}{user.last_name?.[0] || user.name?.[0] || 'U'}
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-1">
-                  <h3 className="text-xl md:text-2xl font-black text-dark">{user.name}</h3>
+                  <h3 className="text-xl md:text-2xl font-black text-dark">{getFullName(user)}</h3>
                   <Badge variant={user.role === 'admin' ? 'sold' : 'available'}>
                     {user.role?.toUpperCase()}
                   </Badge>

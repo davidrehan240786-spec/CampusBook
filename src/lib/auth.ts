@@ -7,16 +7,31 @@ export const isLoggedIn = () => {
 
 export const getCurrentUser = () => {
   if (!isLoggedIn()) {
-    return { id: '', name: 'Guest', role: 'guest', campus: '' };
+    return { id: '', first_name: 'Guest', last_name: '', name: 'Guest', role: 'guest', campus: '' };
   }
   
   const userData = localStorage.getItem('userData');
   if (userData) {
-    return JSON.parse(userData);
+    const user = JSON.parse(userData);
+    // Add compatibility: ensure first_name/last_name exist or fallback to name
+    if (!user.first_name && user.name) {
+      const parts = user.name.split(' ');
+      user.first_name = parts[0];
+      user.last_name = parts.slice(1).join(' ');
+    }
+    return user;
   }
   
   // Fallback for safety during transition
-  return { id: '1', name: 'Rehan Busters', role: 'user', campus: 'SJCE' };
+  return { id: '1', first_name: 'Rehan', last_name: 'Busters', name: 'Rehan Busters', role: 'user', campus: 'KLE' };
+};
+
+export const getFullName = (user: any) => {
+  if (!user) return 'Guest';
+  if (user.first_name) {
+    return `${user.first_name} ${user.last_name || ''}`.trim();
+  }
+  return user.name || 'Unknown User';
 };
 
 export const getToken = () => {

@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Book, User as UserIcon, GraduationCap, School, Mail, Lock, ShieldCheck, Phone, Loader2 } from 'lucide-react';
 import { setUserRole } from '../lib/auth';
 import { useToast } from '../components/Toast';
+import { CAMPUSES } from '../constants';
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export const RegisterPage = () => {
     lastName: '',
     email: '',
     password: '',
-    campus: 'SJCE',
+    campus: 'KLE',
     usn: '',
     phone: ''
   });
@@ -112,11 +113,9 @@ export const RegisterPage = () => {
                   onChange={handleChange}
                   className="w-full h-14 bg-white border-2 border-dark rounded-2xl px-6 font-bold shadow-[4px_4px_0_0_rgba(25,26,35,1)] focus:outline-none appearance-none"
                 >
-                  <option value="SJCE">SJCE Mysuru</option>
-                  <option value="NIE">NIE Mysuru</option>
-                  <option value="PES">PES University</option>
-                  <option value="MSIT">MSIT Delhi</option>
-                  <option value="Other">Other Campus</option>
+                  {CAMPUSES.map(campus => (
+                    <option key={campus.short} value={campus.short}>{campus.full}</option>
+                  ))}
                 </select>
                 <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
                   <School size={18} className="text-zinc-400" />
